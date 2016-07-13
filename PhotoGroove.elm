@@ -3,7 +3,6 @@ module PhotoGroove exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
-import Html.App
 
 
 urlPrefix =
@@ -50,4 +49,8 @@ update msg model =
 
 
 main =
-    Html.App.beginnerProgram { model = initialModel, view = view, update = update }
+    Html.beginnerProgram
+        { model = initialModel
+        , view = view
+        , update = update
+        }
