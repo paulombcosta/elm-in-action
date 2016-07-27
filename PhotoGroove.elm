@@ -3,7 +3,6 @@ module PhotoGroove exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
-import Html.App
 import Array exposing (Array)
 
 
@@ -30,6 +29,7 @@ view model =
         ]
 
 
+viewThumbnail : String -> Photo -> Html Msg
 viewThumbnail selectedUrl thumbnail =
     img
         [ src (urlPrefix ++ thumbnail.url)
@@ -73,7 +73,7 @@ update msg model =
 
 
 main =
-    Html.App.beginnerProgram
+    Html.beginnerProgram
         { model = initialModel
         , view = view
         , update = update
