@@ -3,7 +3,7 @@ module PhotoGroove exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
-import Html.App
+import Array exposing (Array)
 
 
 urlPrefix : String
@@ -44,6 +44,11 @@ initialModel =
     }
 
 
+photoArray : Array { url : String }
+photoArray =
+    Array.fromList initialModel.photos
+
+
 update msg model =
     if msg.operation == "SELECT_PHOTO" then
         { model | selectedUrl = msg.data }
@@ -52,7 +57,7 @@ update msg model =
 
 
 main =
-    Html.App.beginnerProgram
+    Html.beginnerProgram
         { model = initialModel
         , view = view
         , update = update
