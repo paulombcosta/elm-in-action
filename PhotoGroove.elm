@@ -3,8 +3,8 @@ module PhotoGroove exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
-import Html.App
 import Array exposing (Array)
+import Random
 
 
 urlPrefix : String
@@ -51,7 +51,7 @@ viewThumbnail selectedUrl thumbnail =
 viewSizeChooser : ThumbnailSize -> Html Msg
 viewSizeChooser size =
     label []
-        [ input [ type' "radio", name "size", onClick (SetSize size) ] []
+        [ input [ type_ "radio", name "size", onClick (SetSize size) ] []
         , text (sizeToString size)
         ]
 
@@ -109,13 +109,22 @@ getPhotoUrl index =
 
 type Msg
     = SelectByUrl String
+    | SelectByIndex Int
     | SurpriseMe
     | SetSize ThumbnailSize
+
+
+randomPhotoPicker : Random.Generator Int
+randomPhotoPicker =
+    Random.int 0 (Array.length photoArray - 1)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        SelectByIndex index ->
+            ( { model | selectedUrl = getPhotoUrl index }, Cmd.none )
+
         SelectByUrl url ->
             ( { model | selectedUrl = url }, Cmd.none )
 
@@ -127,7 +136,7 @@ update msg model =
 
 
 main =
-    Html.App.program
+    Html.program
         { init = ( initialModel, Cmd.none )
         , view = view
         , update = update
