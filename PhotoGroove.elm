@@ -3,7 +3,6 @@ module PhotoGroove exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
-import Html.App
 import Array exposing (Array)
 
 
@@ -20,6 +19,9 @@ view : Model -> Html Msg
 view model =
     div [ class "content" ]
         [ h1 [] [ text "Photo Groove" ]
+        , button
+            [ onClick { operation = "SURPRISE_ME", data = "" } ]
+            [ text "Surprise Me!" ]
         , div [ id "thumbnails" ]
             (List.map (viewThumbnail model.selectedUrl) model.photos)
         , img
@@ -66,15 +68,18 @@ photoArray =
     Array.fromList initialModel.photos
 
 
+update : Msg -> Model -> Model
 update msg model =
     if msg.operation == "SELECT_PHOTO" then
         { model | selectedUrl = msg.data }
+    else if msg.operation == "SURPRISE_ME" then
+        { model | selectedUrl = "2.jpeg" }
     else
         model
 
 
 main =
-    Html.App.beginnerProgram
+    Html.beginnerProgram
         { model = initialModel
         , view = view
         , update = update
