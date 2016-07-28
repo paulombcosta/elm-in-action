@@ -3,7 +3,6 @@ module PhotoGroove exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
-import Html.App
 import Array exposing (Array)
 
 
@@ -55,7 +54,7 @@ viewThumbnail selectedUrl thumbnail =
 viewSizeChooser : ThumbnailSize -> Html Msg
 viewSizeChooser size =
     label []
-        [ input [ type' "radio", name "size" ] []
+        [ input [ type_ "radio", name "size" ] []
         , text (sizeToString size)
         ]
 
@@ -101,6 +100,16 @@ photoArray =
     Array.fromList initialModel.photos
 
 
+getPhotoUrl : Int -> String
+getPhotoUrl index =
+    case Array.get index photoArray of
+        Just photo ->
+            photo.url
+
+        Nothing ->
+            ""
+
+
 update : Msg -> Model -> Model
 update msg model =
     if msg.operation == "SELECT_PHOTO" then
@@ -112,7 +121,7 @@ update msg model =
 
 
 main =
-    Html.App.beginnerProgram
+    Html.beginnerProgram
         { model = initialModel
         , view = view
         , update = update
