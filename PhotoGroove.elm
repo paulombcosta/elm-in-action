@@ -5,7 +5,7 @@ import Html.Events exposing (onClick)
 import Array exposing (Array)
 import Random
 import Http
-import Html.Attributes exposing (id, class, classList, src, name, type_, title)
+import Html.Attributes as Attr exposing (id, class, classList, src, name, type_, title)
 import Json.Decode exposing (string, int, list, Decoder)
 import Json.Decode.Pipeline exposing (decode, required, optional)
 
@@ -41,12 +41,26 @@ view model =
         , button
             [ onClick SurpriseMe ]
             [ text "Surprise Me!" ]
+        , div [ class "filters" ]
+            [ viewFilter "Hue" 0
+            , viewFilter "Ripple" 0
+            , viewFilter "Noise" 0
+            ]
         , h3 [] [ text "Thumbnail Size:" ]
         , div [ id "choose-size" ]
             (List.map viewSizeChooser [ Small, Medium, Large ])
         , div [ id "thumbnails", class (sizeToString model.chosenSize) ]
             (List.map (viewThumbnail model.selectedUrl) model.photos)
         , viewLarge model.selectedUrl
+        ]
+
+
+viewFilter : String -> Int -> Html Msg
+viewFilter name magnitude =
+    div [ class "filter-slider" ]
+        [ label [] [ text name ]
+        , paperSlider [ Attr.max "11" ] []
+        , label [] [ text (toString magnitude) ]
         ]
 
 
@@ -215,3 +229,8 @@ main =
         , update = update
         , subscriptions = (\_ -> Sub.none)
         }
+
+
+paperSlider : List (Attribute msg) -> List (Html msg) -> Html msg
+paperSlider =
+    node "paper-slider"
