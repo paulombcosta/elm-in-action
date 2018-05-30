@@ -9369,6 +9369,32 @@ var _user$project$PhotoFolders$update = F2(
 				}
 		}
 	});
+var _user$project$PhotoFolders$folderFromJson = F3(
+	function (name, photos, subfolders) {
+		return _user$project$PhotoFolders$Folder(
+			{
+				name: name,
+				expanded: true,
+				subfolders: subfolders,
+				photoUrls: _elm_lang$core$Dict$keys(photos)
+			});
+	});
+var _user$project$PhotoFolders$folderDecoder = A3(
+	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+	'subfolders',
+	_elm_lang$core$Json_Decode$lazy(
+		function (_p9) {
+			return _elm_lang$core$Json_Decode$list(_user$project$PhotoFolders$folderDecoder);
+		}),
+	A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'photos',
+		_user$project$PhotoFolders$photosDecoder,
+		A3(
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+			'name',
+			_elm_lang$core$Json_Decode$string,
+			_elm_lang$core$Json_Decode$succeed(_user$project$PhotoFolders$folderFromJson))));
 var _user$project$PhotoFolders$ToggleExpanded = function (a) {
 	return {ctor: 'ToggleExpanded', _0: a};
 };
@@ -9514,20 +9540,20 @@ var _user$project$PhotoFolders$Subfolder = F2(
 var _user$project$PhotoFolders$End = {ctor: 'End'};
 var _user$project$PhotoFolders$appendIndex = F2(
 	function (index, path) {
-		var _p9 = path;
-		if (_p9.ctor === 'End') {
+		var _p10 = path;
+		if (_p10.ctor === 'End') {
 			return A2(_user$project$PhotoFolders$Subfolder, index, _user$project$PhotoFolders$End);
 		} else {
 			return A2(
 				_user$project$PhotoFolders$Subfolder,
-				_p9._0,
-				A2(_user$project$PhotoFolders$appendIndex, index, _p9._1));
+				_p10._0,
+				A2(_user$project$PhotoFolders$appendIndex, index, _p10._1));
 		}
 	});
 var _user$project$PhotoFolders$viewFolder = F2(
-	function (path, _p10) {
-		var _p11 = _p10;
-		var _p12 = _p11._0;
+	function (path, _p11) {
+		var _p12 = _p11;
+		var _p13 = _p12._0;
 		var folderLabel = A2(
 			_elm_lang$html$Html$label,
 			{
@@ -9538,7 +9564,7 @@ var _user$project$PhotoFolders$viewFolder = F2(
 			},
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html$text(_p12.name),
+				_0: _elm_lang$html$Html$text(_p13.name),
 				_1: {ctor: '[]'}
 			});
 		var viewSubfolder = F2(
@@ -9548,11 +9574,11 @@ var _user$project$PhotoFolders$viewFolder = F2(
 					A2(_user$project$PhotoFolders$appendIndex, index, path),
 					subfolder);
 			});
-		if (_p12.expanded) {
+		if (_p13.expanded) {
 			var contents = A2(
 				_elm_lang$core$List$append,
-				A2(_elm_lang$core$List$indexedMap, viewSubfolder, _p12.subfolders),
-				A2(_elm_lang$core$List$map, _user$project$PhotoFolders$viewPhoto, _p12.photoUrls));
+				A2(_elm_lang$core$List$indexedMap, viewSubfolder, _p13.subfolders),
+				A2(_elm_lang$core$List$map, _user$project$PhotoFolders$viewPhoto, _p13.photoUrls));
 			return A2(
 				_elm_lang$html$Html$div,
 				{
@@ -9596,9 +9622,9 @@ var _user$project$PhotoFolders$view = function (model) {
 		return A2(_elm_lang$core$Dict$get, url, model.photos);
 	};
 	var selectedPhoto = function () {
-		var _p13 = A2(_elm_lang$core$Maybe$andThen, photoByUrl, model.selectedPhotoUrl);
-		if (_p13.ctor === 'Just') {
-			return _user$project$PhotoFolders$viewSelectedPhoto(_p13._0);
+		var _p14 = A2(_elm_lang$core$Maybe$andThen, photoByUrl, model.selectedPhotoUrl);
+		if (_p14.ctor === 'Just') {
+			return _user$project$PhotoFolders$viewSelectedPhoto(_p14._0);
 		} else {
 			return _elm_lang$html$Html$text('');
 		}
@@ -9658,7 +9684,7 @@ var _user$project$PhotoFolders$main = _elm_lang$html$Html$program(
 		init: _user$project$PhotoFolders$init,
 		view: _user$project$PhotoFolders$view,
 		update: _user$project$PhotoFolders$update,
-		subscriptions: function (_p14) {
+		subscriptions: function (_p15) {
 			return _elm_lang$core$Platform_Sub$none;
 		}
 	})();
